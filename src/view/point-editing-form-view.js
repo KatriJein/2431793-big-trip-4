@@ -1,12 +1,11 @@
 import { createElement } from '../render.js';
-import dayjs from 'dayjs';
 import { POINT_TYPES, DESTINATIONS } from '../const.js';
-import { getLastWord, upperFirstChar, humanizeFullDate } from '../utils.js';
+import { getLastWord, upperFirstChar, humanizeDate } from '../utils.js';
 
 const BLANK_POINT = {
   type: 'flight',
-  dateFrom: dayjs().format('YYYY-MM-DDTHH:mm:ss.SSSZ'),
-  dateTo: dayjs().format('YYYY-MM-DDTHH:mm:ss.SSSZ'),
+  dateFrom: humanizeDate(null, 'YYYY-MM-DDTHH:mm:ss.SSSZ'),
+  dateTo: humanizeDate(null, 'YYYY-MM-DDTHH:mm:ss.SSSZ'),
   basePrice: 0,
   offers: [],
   destination: {
@@ -103,10 +102,10 @@ function createEditPointTemplate({ point, offersOfThisType }) {
 
     <div class="event__field-group  event__field-group--time">
       <label class="visually-hidden" for="event-start-time-1">From</label>
-      <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${humanizeFullDate(dateFrom)}">
+      <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${humanizeDate(dateFrom, 'DD/MM/YY HH:mm')}">
       &mdash;
       <label class="visually-hidden" for="event-end-time-1">To</label>
-      <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${humanizeFullDate(dateTo)}">
+      <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${humanizeDate(dateTo, 'DD/MM/YY HH:mm')}">
     </div>
 
     <div class="event__field-group  event__field-group--price">

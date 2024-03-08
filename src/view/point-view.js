@@ -1,6 +1,5 @@
 import { createElement } from '../render.js';
-import dayjs from 'dayjs';
-import { humanizeHHmm, humanizeShortDate, getDuration, upperFirstChar } from '../utils.js';
+import { humanizeDate, getDuration, upperFirstChar } from '../utils.js';
 
 function createOffers(offers) {
   return offers ? offers.map((offer) =>
@@ -16,16 +15,16 @@ function createPointTemplate(point) {
   const favouriteClassname = isFavorite ? 'event__favorite-btn--active' : '';
 
   return `<div class="event">
-  <time class="event__date" datetime="${dayjs(dateFrom).format('YYYY-MM-DD')}">${humanizeShortDate(dateFrom)}</time>
+  <time class="event__date" datetime="${humanizeDate(dateFrom, 'YYYY-MM-DD')}">${humanizeDate(dateFrom, 'MMM DD')}</time>
   <div class="event__type">
     <img class="event__type-icon" width="42" height="42" src="img/icons/${type}.png" alt="Event type icon">
   </div>
   <h3 class="event__title">${upperFirstChar(type)} ${destination.name}</h3>
   <div class="event__schedule">
     <p class="event__time">
-      <time class="event__start-time" datetime="${dayjs(dateFrom).format('YYYY-MM-DDTHH:mm')}">${humanizeHHmm(dateFrom)}</time>
+      <time class="event__start-time" datetime="${humanizeDate(dateFrom, 'YYYY-MM-DDTHH:mm')}">${humanizeDate(dateFrom, 'HH:mm')}</time>
       &mdash;
-      <time class="event__end-time" datetime="${dayjs(dateTo).format('YYYY-MM-DDTHH:mm')}">${humanizeHHmm(dateTo)}</time>
+      <time class="event__end-time" datetime="${humanizeDate(dateTo, 'YYYY-MM-DDTHH:mm')}">${humanizeDate(dateTo, 'HH:mm')}</time>
     </p>
     <p class="event__duration">${getDuration(dateFrom, dateTo)}</p>
   </div>

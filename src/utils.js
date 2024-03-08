@@ -2,9 +2,11 @@ import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 dayjs.extend(duration);
 
-const MIN_IN_HOUR = 60;
-const MIN_IN_DAY = MIN_IN_HOUR * 24;
-const MIN_IN_YEAR = MIN_IN_DAY * 365;
+const TimePeriods = {
+  minInHour: 60,
+  minInDay: 1440,
+  minInYear: 525600
+};
 
 function getRandomArrayElement(items) {
   return items[Math.floor(Math.random() * items.length)];
@@ -14,26 +16,18 @@ function getRandomInteger(min, max) {
   return Math.round((max - min) * Math.random() + min);
 }
 
-function humanizeFullDate(date) {
-  return date ? dayjs(date).format('DD/MM/YY HH:mm') : '';
-}
-
-function humanizeShortDate(date) {
-  return date ? dayjs(date).format('MMM DD') : '';
-}
-
-function humanizeHHmm(date) {
-  return date ? dayjs(date).format('HH:mm') : '';
+function humanizeDate(date, format) {
+  return date ? dayjs(date).format(format) : dayjs().format(format);
 }
 
 function getDuration(dateFrom, dateTo) {
   const timeDiff = dayjs(dateTo).diff(dayjs(dateFrom), 'minute');
 
-  if (timeDiff >= MIN_IN_YEAR) {
+  if (timeDiff >= TimePeriods.minInYear) {
     return dayjs.duration(timeDiff, 'minutes').format('YY[Y] DD[D] HH[H] mm[M]');
-  } else if (timeDiff >= MIN_IN_DAY) {
+  } else if (timeDiff >= TimePeriods.minInDay) {
     return dayjs.duration(timeDiff, 'minutes').format('DD[D] HH[H] mm[M]');
-  } else if (timeDiff >= MIN_IN_HOUR) {
+  } else if (timeDiff >= TimePeriods.minInHour) {
     return dayjs.duration(timeDiff, 'minutes').format('HH[H] mm[M]');
   } else {
     return dayjs.duration(timeDiff, 'minutes').format('mm[M]');
@@ -49,4 +43,4 @@ function upperFirstChar(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-export { getRandomArrayElement, getRandomInteger, humanizeFullDate, getDuration, humanizeShortDate, humanizeHHmm, getLastWord, upperFirstChar};
+export { getRandomArrayElement, getRandomInteger, getDuration, humanizeDate, getLastWord, upperFirstChar};
