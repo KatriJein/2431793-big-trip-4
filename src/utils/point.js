@@ -30,6 +30,11 @@ function getDuration(dateFrom, dateTo) {
   }
 }
 
+function getDurationNF(dateFrom, dateTo) {
+  const timeDiff = dayjs(dateTo).diff(dayjs(dateFrom), 'minute');
+  return dayjs.duration(timeDiff);
+}
+
 function isFutureDate(dateFrom) {
   return dayjs(dateFrom).isAfter(dayjs());
 }
@@ -43,4 +48,4 @@ function isPresentDate(dateFrom, dateTo) {
   return now.isSameOrAfter(dateFrom) && now.isSameOrBefore(dateTo);
 }
 
-export { humanizeDate, getDuration, isFutureDate, isPastDate, isPresentDate };
+export { humanizeDate, getDuration, isFutureDate, isPastDate, isPresentDate, getDurationNF };
