@@ -19,7 +19,7 @@ const points = [{
   offers: [],
   type: POINT_TYPES[0]
 }, {
-  basePrice: 100,
+  basePrice: 1200,
   dateFrom: '2021-08-05T10:25:56.845Z',
   dateTo: '2021-08-08T15:55:56.845Z',
   destination: 2,

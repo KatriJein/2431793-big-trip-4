@@ -11,6 +11,9 @@ export default class PointPresenter {
   #pointListContainer = null;
   #handleDataChange = null;
 
+  #destinationsModel = null;
+  #offersModel = null;
+
   #pointComponent = null;
   #pointEditComponent = null;
 
@@ -19,10 +22,13 @@ export default class PointPresenter {
   #onModeChange = null;
   #mode = Mode.DEFAULT;
 
-  constructor({ pointsListContainer, onDataChange, onModeChange }) {
+  constructor({ pointsListContainer, onDataChange, onModeChange, destinationsModel,
+    offersModel, }) {
     this.#pointListContainer = pointsListContainer;
     this.#handleDataChange = onDataChange;
     this.#onModeChange = onModeChange;
+    this.#destinationsModel = destinationsModel;
+    this.#offersModel = offersModel;
   }
 
   init(point) {
@@ -33,12 +39,16 @@ export default class PointPresenter {
 
     this.#pointComponent = new PointView({
       point: this.#point,
+      destination: this.#destinationsModel.getById(point.destination),
+      offers: this.#offersModel.getByType(point.type),
       onEditClick: this.#handleEditClick,
       onFavoriteClick: this.#handleFavoriteClick,
     });
 
     this.#pointEditComponent = new PointEditingFormView({
       point: this.#point,
+      destinations: this.#destinationsModel.destinations,
+      offers: this.#offersModel.offers,
       onFormReset: this.#handleFormReset,
       onFormSubmit: this.#handleFormSubmit,
     });
@@ -91,6 +101,7 @@ export default class PointPresenter {
   #escKeyDownHandler = (evt) => {
     if (evt.key === 'Escape') {
       evt.preventDefault();
+      this.#pointEditComponent.reset(this.#point);
       this.#replaceFormToCard();
     }
   };
@@ -99,11 +110,13 @@ export default class PointPresenter {
     this.#replaceCardToForm();
   };
 
-  #handleFormSubmit = () => {
+  #handleFormSubmit = (updatedPoint) => {
+    this.#point = updatedPoint;
     this.#replaceFormToCard();
   };
 
   #handleFormReset = () => {
+    this.#pointEditComponent.reset(this.#point);
     this.#replaceFormToCard();
   };
 }
