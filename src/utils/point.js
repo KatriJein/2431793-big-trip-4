@@ -13,7 +13,7 @@ const TimePeriods = {
 };
 
 function humanizeDate(date, format) {
-  return date ? dayjs(date).format(format) : dayjs().format(format);
+  return date ? dayjs(date).format(format) : '';
 }
 
 function getDuration(dateFrom, dateTo) {

@@ -2,6 +2,7 @@ import { POINT_TYPES, DESTINATIONS } from '../const.js';
 import { getLastWord, upperFirstChar } from '../utils/common.js';
 import { humanizeDate } from '../utils/point.js';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
+import DatePicker from './date-picker.js';
 
 const BLANK_POINT = {
   type: 'flight',
@@ -9,11 +10,7 @@ const BLANK_POINT = {
   dateTo: humanizeDate(null, 'YYYY-MM-DDTHH:mm:ss.SSSZ'),
   basePrice: 0,
   offers: [],
-  destination: {
-    name: '',
-    description: '',
-    pictures: [],
-  },
+  destination: null
 };
 
 function createEventSelector() {
@@ -135,12 +132,15 @@ function createEditPointTemplate({ point, destinations, AllOffers }) {
 export default class PointEditingFormView extends AbstractStatefulView {
   #handleFormSubmit = null;
   #handleFormReset = null;
+
   #destinations = null;
   #offers = null;
 
+  #datePickerFrom = null;
+  #datePickerTo = null;
+
   constructor({ point = BLANK_POINT, onFormSubmit, onFormReset, destinations, offers }) {
     super();
-    // this._state = PointEditingFormView.parsePointToState(point);
     this.#destinations = destinations;
     this.#offers = offers;
     this.#handleFormSubmit = onFormSubmit;
@@ -160,7 +160,54 @@ export default class PointEditingFormView extends AbstractStatefulView {
     this.element.querySelector('.event__input--destination').addEventListener('change', this.#destinationChangeHandler);
     this.element.querySelector('.event__input--price').addEventListener('change', this.#priceChangeHandler);
     this.element.querySelector('.event__available-offers')?.addEventListener('change', this.#offersChangeHandler);
+    this.#setDatePickers();
   }
+
+  removeElement = () => {
+    super.removeElement();
+
+    if (this.#datePickerFrom) {
+      this.#datePickerFrom.destroy();
+      this.#datePickerFrom = null;
+    }
+
+    if (this.#datePickerTo) {
+      this.#datePickerTo.destroy();
+      this.#datePickerTo = null;
+    }
+  };
+
+  #setDatePickers = () => {
+    this.#datePickerFrom = new DatePicker({
+      element: this.element.querySelector('#event-start-time-1'),
+      defaultDate: this._state.dateFrom,
+      maxDate: this._state.dateTo,
+      onClose: this.#dateFromCloseHandler,
+    });
+
+    this.#datePickerTo = new DatePicker({
+      element: this.element.querySelector('#event-end-time-1'),
+      defaultDate: this._state.dateTo,
+      minDate: this._state.dateFrom,
+      onClose: this.#dateToCloseHandler,
+    });
+  };
+
+  #dateFromCloseHandler = ([userDate]) => {
+    this._setState({
+      dateFrom: userDate
+    });
+
+    this.#datePickerTo.setMinDate(this._state.dateFrom);
+  };
+
+  #dateToCloseHandler = ([userDate]) => {
+    this._setState({
+      dateTo: userDate
+    });
+
+    this.#datePickerFrom.setMaxDate(this._state.dateTo);
+  };
 
   #formResetHandler = (evt) => {
     evt.preventDefault();
