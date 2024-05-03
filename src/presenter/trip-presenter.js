@@ -12,6 +12,8 @@ import { remove } from '../framework/render';
 export default class TripPresenter {
   #tripContainer = null;
   #pointsModel = null;
+  #destinationsModel = null;
+  #offersModel = null;
   #points = [];
   #pointsListComponent = new ListEventsView();
   #sortComponent = null;
@@ -22,9 +24,11 @@ export default class TripPresenter {
   #sortedPoints = [];
 
 
-  constructor({ tripContainer, pointsModel }) {
+  constructor({ tripContainer, pointsModel, destinationsModel, offersModel }) {
     this.#tripContainer = tripContainer;
     this.#pointsModel = pointsModel;
+    this.#destinationsModel = destinationsModel;
+    this.#offersModel = offersModel;
   }
 
   init() {
@@ -95,6 +99,8 @@ export default class TripPresenter {
   #renderPoint(point) {
     const pointPresenter = new PointPresenter({
       pointsListContainer: this.#pointsListComponent.element,
+      destinationsModel: this.#destinationsModel,
+      offersModel: this.#offersModel,
       onDataChange: this.#handlePointChange,
       onModeChange: this.#handleModeChange});
     pointPresenter.init(point);

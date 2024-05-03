@@ -11,10 +11,10 @@ const headerInfoContainer = document.querySelector('.trip-main');
 const filterContainer = document.querySelector('.trip-controls__filters');
 const tripContainer = document.querySelector('.trip-events');
 
-const destinationModel = new DestinationModel();
+const destinationsModel = new DestinationModel();
 const offersModel = new OffersModel();
-const pointsModel = new PointsModel({ destinationModel, offersModel });
-const tripPresenter = new TripPresenter({ tripContainer, pointsModel });
+const pointsModel = new PointsModel();
+const tripPresenter = new TripPresenter({ tripContainer, pointsModel, destinationsModel, offersModel });
 const filters = generateFilter(pointsModel.points);
 
 render(new TripInfoView(), headerInfoContainer, RenderPosition.AFTERBEGIN);
