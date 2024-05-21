@@ -48,4 +48,12 @@ function isPresentDate(dateFrom, dateTo) {
   return now.isSameOrAfter(dateFrom) && now.isSameOrBefore(dateTo);
 }
 
-export { humanizeDate, getDuration, isFutureDate, isPastDate, isPresentDate, getDurationNF };
+function isDatesEqual(dateA, dateB) {
+  return (dateA === null && dateB === null) || dayjs(dateA).isSame(dateB, 'D');
+}
+
+function isPriceEqual(priceA, priceB) {
+  return priceA === priceB;
+}
+
+export { humanizeDate, getDuration, isFutureDate, isPastDate, isPresentDate, getDurationNF, isDatesEqual, isPriceEqual };
