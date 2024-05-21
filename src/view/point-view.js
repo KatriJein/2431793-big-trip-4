@@ -1,6 +1,7 @@
 import AbstractView from '../framework/view/abstract-view.js';
 import { upperFirstChar } from '../utils/common.js';
 import { humanizeDate, getDuration } from '../utils/point.js';
+import he from 'he';
 
 function createOffers({ currentOffers, offers }) {
   return `<ul class="event__selected-offers">
@@ -23,7 +24,7 @@ function createPointTemplate({ point, destination, currentOffers }) {
   <div class="event__type">
     <img class="event__type-icon" width="42" height="42" src="img/icons/${type}.png" alt="Event type icon">
   </div>
-  <h3 class="event__title">${upperFirstChar(type)} ${destination.name}</h3>
+  <h3 class="event__title">${upperFirstChar(type)} ${he.encode(destination.name)}</h3>
   <div class="event__schedule">
     <p class="event__time">
       <time class="event__start-time" datetime="${humanizeDate(dateFrom, 'YYYY-MM-DDTHH:mm')}">${humanizeDate(dateFrom, 'HH:mm')}</time>
@@ -33,7 +34,7 @@ function createPointTemplate({ point, destination, currentOffers }) {
     <p class="event__duration">${getDuration(dateFrom, dateTo)}</p>
   </div>
   <p class="event__price">
-    &euro;&nbsp;<span class="event__price-value">${basePrice}</span>
+    &euro;&nbsp;<span class="event__price-value">${he.encode(basePrice.toString())}</span>
   </p>
   <h4 class="visually-hidden">Offers:</h4>
     ${offers.length > 0 ? createOffers({ currentOffers, offers }) : ''}
