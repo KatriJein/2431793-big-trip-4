@@ -1,4 +1,4 @@
-import { POINT_TYPES, DESTINATIONS } from '../const.js';
+import { POINT_TYPES } from '../const.js';
 import { getLastWord, upperFirstChar } from '../utils/common.js';
 import { humanizeDate } from '../utils/point.js';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
@@ -74,9 +74,9 @@ function createDestinationSection(destination) {
 </section>` : '';
 }
 
-function createDestinationList() {
+function createDestinationList(destinations) {
   return `<datalist id="destination-list-1">
-  ${DESTINATIONS.map((item) => (`<option value="${item}"></option>`)).join('')}
+  ${destinations.map((item) => (`<option value="${item.name}"></option>`)).join('')}
   </datalist>`;
 }
 
@@ -99,7 +99,7 @@ function createEditPointTemplate({ point, destinations, AllOffers, typeForm }) {
         ${upperFirstChar(type)}
       </label>
       <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${currentDestination ? he.encode(currentDestination.name) : ''}" list="destination-list-1">
-      ${createDestinationList()}
+      ${createDestinationList(destinations)}
     </div>
 
     <div class="event__field-group  event__field-group--time">

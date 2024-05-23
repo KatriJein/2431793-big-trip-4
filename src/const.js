@@ -1,4 +1,4 @@
-const DESTINATIONS = ['Amsterdam', 'Chamonix', 'Geneva', 'Paris', 'Saint Petersburg', 'Vienna'];
+// const DESTINATIONS = ['Amsterdam', 'Chamonix', 'Geneva', 'Paris', 'Saint Petersburg', 'Vienna'];
 const POINT_TYPES = ['taxi', 'flight', 'bus', 'train', 'ship', 'drive', 'check-in', 'sightseeing', 'restaurant'];
 
 const FilterType = {
@@ -24,6 +24,7 @@ const UpdateType = {
   PATCH: 'PATCH',
   MINOR: 'MINOR',
   MAJOR: 'MAJOR',
+  INIT: 'INIT'
 };
 
 const EditingType = {
@@ -31,4 +32,9 @@ const EditingType = {
   NEW: 'NEW'
 };
 
-export { DESTINATIONS, POINT_TYPES, FilterType, SortType, UserAction, UpdateType, EditingType };
+const Method = {
+  GET: 'GET',
+  PUT: 'PUT',
+};
+
+export { POINT_TYPES, FilterType, SortType, UserAction, UpdateType, EditingType, Method };
