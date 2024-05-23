@@ -1,7 +1,13 @@
-import { getAllOffers } from '../mock/offer';
+import Observable from '../framework/observable';
 
-export default class OffersModel {
-  #offers = getAllOffers();
+export default class OffersModel extends Observable {
+  #offers = [];
+  #offersApiService = null;
+
+  constructor({ offersApiService }) {
+    super();
+    this.#offersApiService = offersApiService;
+  }
 
   get offers() {
     return this.#offers;
@@ -9,5 +15,14 @@ export default class OffersModel {
 
   getByType(type) {
     return this.offers.find((offer) => (offer.type === type))?.offers;
+  }
+
+  async init() {
+    try {
+      const offers = await this.#offersApiService.offers;
+      this.#offers = offers;
+    } catch(err) {
+      this.#offers = [];
+    }
   }
 }
