@@ -45,7 +45,6 @@ const filterPresenter = new FilterPresenter({
 
 function handleNewPointFormClose() {
   newPointButtonComponent.element.disabled = false;
-  tripPresenter.rerender();
 }
 
 function handleNewPointButtonClick() {
