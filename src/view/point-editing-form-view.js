@@ -228,9 +228,6 @@ export default class PointEditingFormView extends AbstractStatefulView {
 
   #formSubmitHandler = (evt) => {
     evt.preventDefault();
-    if (!this._state.destination || !this._state.dateFrom || !this._state.dateTo || isNaN(this._state.basePrice)) {
-      return;
-    }
     this.#handleFormSubmit(PointEditingFormView.parseStateToPoint(this._state));
   };
 

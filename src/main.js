@@ -19,8 +19,8 @@ const filterContainer = document.querySelector('.trip-controls__filters');
 const tripContainer = document.querySelector('.trip-events');
 
 const destinationsModel = new DestinationModel({ destinationsApiService: new DestinationsApiService(END_POINT, AUTHORIZATION) });
-const offersModel = new OffersModel({ offersApiService: new OffersApiService(END_POINT, AUTHORIZATION) });
-const pointsModel = new PointsModel({ pointsApiService: new PointsApiService(END_POINT, AUTHORIZATION) });
+const offersModel = new OffersModel({ offersApiService: new OffersApiService(END_POINT, AUTHORIZATION)});
+const pointsModel = new PointsModel({ pointsApiService: new PointsApiService(END_POINT, AUTHORIZATION)});
 const filterModel = new FilterModel();
 
 const newPointButtonComponent = new NewPointButtonView({

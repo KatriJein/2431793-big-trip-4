@@ -8,6 +8,7 @@ import { filter } from '../utils/filter';
 import NewPointPresenter from './new-point-presenter';
 import LoadingView from '../view/loading-view';
 import UiBlocker from '../framework/ui-blocker/ui-blocker';
+import ErrorView from '../view/error-view';
 
 const TimeLimit = {
   LOWER_LIMIT: 350,
@@ -27,6 +28,7 @@ export default class TripPresenter {
   #noPointComponent = null;
   #newPointButtonComponent = null;
   #loadingComponent = new LoadingView();
+  #errorComponent = new ErrorView();
 
   #pointPresenters = new Map();
   #newPointPresenter = null;
@@ -38,6 +40,7 @@ export default class TripPresenter {
 
   #creatingNewPoint = false;
   #isLoading = true;
+  #isError = false;
   #uiBlocker = new UiBlocker({
     lowerLimit: TimeLimit.LOWER_LIMIT,
     upperLimit: TimeLimit.UPPER_LIMIT
@@ -62,6 +65,8 @@ export default class TripPresenter {
       onDestroy: this.#newPointDestroyHandler
     });
 
+    this.#offersModel.addObserver(this.#handleModelEvent);
+    this.#destinationsModel.addObserver(this.#handleModelEvent);
     this.#pointsModel.addObserver(this.#handleModelEvent);
     this.#filterModel.addObserver(this.#handleModelEvent);
   }
@@ -128,6 +133,11 @@ export default class TripPresenter {
       return;
     }
 
+    if (this.#isError) {
+      this.#renderError();
+      return;
+    }
+
     if (!this.#creatingNewPoint) {
       if (!this.points.length) {
         this.#renderEmptyList();
@@ -171,6 +181,10 @@ export default class TripPresenter {
 
   #renderLoading() {
     render(this.#loadingComponent, this.#tripContainer);
+  }
+
+  #renderError() {
+    render(this.#errorComponent, this.#tripContainer);
   }
 
   #handleViewAction = async (actionType, updateType, update) => {
@@ -218,8 +232,14 @@ export default class TripPresenter {
         this.#renderBoard();
         break;
       case UpdateType.INIT:
+        if (data.isError) {
+          this.#isError = true;
+          this.#newPointButtonComponent.element.disabled = true;
+        }
         this.#isLoading = false;
         remove(this.#loadingComponent);
+        remove(this.#errorComponent);
+        this.#clearBoard();
         this.#renderBoard();
         break;
     }

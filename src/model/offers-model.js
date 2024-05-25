@@ -1,4 +1,5 @@
 import Observable from '../framework/observable';
+import { UpdateType } from '../const';
 
 export default class OffersModel extends Observable {
   #offers = [];
@@ -23,6 +24,7 @@ export default class OffersModel extends Observable {
       this.#offers = offers;
     } catch (err) {
       this.#offers = [];
+      this._notify(UpdateType.INIT, {isError : true });
     }
   }
 }
