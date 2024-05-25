@@ -1,4 +1,5 @@
-import { render } from './framework/render.js';
+import { render, RenderPosition } from './framework/render.js';
+import TripInfoView from './view/trip-info-view.js';
 import TripPresenter from './presenter/trip-presenter.js';
 import PointsModel from './model/points-model.js';
 import DestinationModel from './model/destinations-model.js';
@@ -9,7 +10,6 @@ import NewPointButtonView from './view/new-point-button-view.js';
 import PointsApiService from './api-services.js/points-api-service.js';
 import DestinationsApiService from './api-services.js/destinations-api-service.js';
 import OffersApiService from './api-services.js/offers-api-service.js';
-import TripInfoPresenter from './presenter/trip-info-presenter.js';
 
 const AUTHORIZATION = 'Basic faithinthefuture';
 const END_POINT = 'https://21.objects.htmlacademy.pro/big-trip';
@@ -25,13 +25,6 @@ const filterModel = new FilterModel();
 
 const newPointButtonComponent = new NewPointButtonView({
   onClick: handleNewPointButtonClick
-});
-
-const tripInfoPresenter = new TripInfoPresenter({
-  container: headerInfoContainer,
-  pointsModel,
-  destinationsModel,
-  offersModel
 });
 
 const tripPresenter = new TripPresenter({
@@ -66,7 +59,11 @@ async function initModels() {
   render(newPointButtonComponent, headerInfoContainer);
 }
 
-tripInfoPresenter.init();
+render(new TripInfoView(), headerInfoContainer, RenderPosition.AFTERBEGIN);
+
+
 filterPresenter.init();
 tripPresenter.init();
 initModels();
+
+

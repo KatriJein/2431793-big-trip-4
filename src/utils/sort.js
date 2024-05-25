@@ -52,4 +52,4 @@ function sortPrice(pointA, pointB) {
   }
 }
 
-export { sortDay, sortTime, sortPrice };
+export {sortDay, sortTime, sortPrice};

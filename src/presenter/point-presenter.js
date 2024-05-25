@@ -33,17 +33,6 @@ export default class PointPresenter {
     this.#offersModel = offersModel;
   }
 
-  destroy() {
-    remove(this.#pointComponent);
-    remove(this.#pointEditComponent);
-  }
-
-  resetView = () => {
-    if (this.#mode !== Mode.DEFAULT) {
-      this.#replaceFormToCard();
-    }
-  };
-
   init(point) {
     this.#point = point;
 
@@ -85,21 +74,24 @@ export default class PointPresenter {
     remove(prevPointEditComponent);
   }
 
-  setAborting() {
-    if (this.#mode === Mode.DEFAULT) {
-      this.#pointComponent.shake();
-      return;
+  destroy() {
+    remove(this.#pointComponent);
+    remove(this.#pointEditComponent);
+  }
+
+  resetView = () => {
+    if (this.#mode !== Mode.DEFAULT) {
+      this.#replaceFormToCard();
     }
+  };
 
-    const resetFormState = () => {
+  setSaving() {
+    if (this.#mode === Mode.EDITING) {
       this.#pointEditComponent.updateElement({
-        isDisabled: false,
-        isSaving: false,
-        isDeleting: false,
+        isDisabled: true,
+        isSaving: true,
       });
-    };
-
-    this.#pointEditComponent.shake(resetFormState);
+    }
   }
 
   setDeleting() {
@@ -111,14 +103,13 @@ export default class PointPresenter {
     }
   }
 
-  setSaving() {
-    if (this.#mode === Mode.EDITING) {
-      this.#pointEditComponent.updateElement({
-        isDisabled: true,
-        isSaving: true,
-      });
-    }
-  }
+  #handleFavoriteClick = () => {
+    this.#handleDataChange(
+      UserAction.UPDATE_POINT,
+      UpdateType.MINOR,
+      {...this.#point, isFavorite: !this.#point.isFavorite},
+    );
+  };
 
   #replaceCardToForm() {
     replace(this.#pointEditComponent, this.#pointComponent);
@@ -143,14 +134,6 @@ export default class PointPresenter {
 
   #handleEditClick = () => {
     this.#replaceCardToForm();
-  };
-
-  #handleFavoriteClick = () => {
-    this.#handleDataChange(
-      UserAction.UPDATE_POINT,
-      UpdateType.MINOR,
-      { ...this.#point, isFavorite: !this.#point.isFavorite },
-    );
   };
 
   #handleFormSubmit = (update) => {
@@ -178,4 +161,21 @@ export default class PointPresenter {
       point,
     );
   };
+
+  setAborting() {
+    if (this.#mode === Mode.DEFAULT) {
+      this.#pointComponent.shake();
+      return;
+    }
+
+    const resetFormState = () => {
+      this.#pointEditComponent.updateElement({
+        isDisabled: false,
+        isSaving: false,
+        isDeleting: false,
+      });
+    };
+
+    this.#pointEditComponent.shake(resetFormState);
+  }
 }
