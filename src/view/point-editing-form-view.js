@@ -17,7 +17,7 @@ const BLANK_POINT = {
   isFavorite: false
 };
 
-function createEventSelector({isDisabled}) {
+function createEventSelector({ isDisabled }) {
   function createEventItems() {
     return POINT_TYPES.map((item) => (`<div class="event__type-item">
     <input id="event-type-${item}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${item}">
@@ -53,7 +53,7 @@ function createOffersSelector({ offers, currentOffers, isDisabled }) {
   return currentOffers.length ? `<section class="event__section  event__section--offers">
   <h3 class="event__section-title  event__section-title--offers">Offers</h3>
   <div class="event__available-offers">
-    ${createOfferItem({isDisabled})}
+    ${createOfferItem({ isDisabled })}
   </div>
 </section>` : '';
 }
@@ -96,7 +96,7 @@ function createEditPointTemplate({ point, destinations, AllOffers, typeForm }) {
         <span class="visually-hidden">Choose event type</span>
         <img class="event__type-icon" width="17" height="17" src="img/icons/${type}.png" alt="Event type icon">
       </label>
-      ${createEventSelector({isDisabled})}
+      ${createEventSelector({ isDisabled })}
     </div>
 
     <div class="event__field-group  event__field-group--destination">
@@ -283,7 +283,8 @@ export default class PointEditingFormView extends AbstractStatefulView {
   });
 
   static parseStateToPoint = (state) => {
-    const point = {...state,
+    const point = {
+      ...state,
       dateFrom: dayjs(state.dateFrom).format(),
       dateTo: dayjs(state.dateTo).format(),
       basePrice: Number(state.basePrice)
