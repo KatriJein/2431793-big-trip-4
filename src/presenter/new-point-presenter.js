@@ -20,6 +20,18 @@ export default class NewPointPresenter {
     this.#offersModel = offersModel;
   }
 
+  destroy({ isCanceled = true } = {}) {
+    if (this.#pointEditComponent === null) {
+      return;
+    }
+
+    remove(this.#pointEditComponent);
+    this.#pointEditComponent = null;
+
+    document.removeEventListener('keydown', this.#escKeyDownHandler);
+    this.#handleDestroy({ isCanceled });
+  }
+
   init() {
     if (this.#pointEditComponent !== null) {
       return;
@@ -38,16 +50,23 @@ export default class NewPointPresenter {
     document.addEventListener('keydown', this.#escKeyDownHandler);
   }
 
-  destroy({isCanceled = true} = {}) {
-    if (this.#pointEditComponent === null) {
-      return;
-    }
+  setAborting() {
+    const resetFormState = () => {
+      this.#pointEditComponent.updateElement({
+        isDisabled: false,
+        isSaving: false,
+        isDeleting: false,
+      });
+    };
 
-    remove(this.#pointEditComponent);
-    this.#pointEditComponent = null;
+    this.#pointEditComponent.shake(resetFormState);
+  }
 
-    document.removeEventListener('keydown', this.#escKeyDownHandler);
-    this.#handleDestroy({isCanceled});
+  setSaving() {
+    this.#pointEditComponent.updateElement({
+      isDisabled: true,
+      isSaving: true,
+    });
   }
 
   #handleFormSubmit = (point) => {
@@ -68,23 +87,4 @@ export default class NewPointPresenter {
       this.destroy();
     }
   };
-
-  setSaving() {
-    this.#pointEditComponent.updateElement({
-      isDisabled: true,
-      isSaving: true,
-    });
-  }
-
-  setAborting() {
-    const resetFormState = () => {
-      this.#pointEditComponent.updateElement({
-        isDisabled: false,
-        isSaving: false,
-        isDeleting: false,
-      });
-    };
-
-    this.#pointEditComponent.shake(resetFormState);
-  }
 }
