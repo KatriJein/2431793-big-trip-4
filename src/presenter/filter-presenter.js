@@ -5,6 +5,7 @@ import { filter } from '../utils/filter.js';
 
 export default class FilterPresenter {
   #filterContainer = null;
+
   #filterModel = null;
   #pointsModel = null;
 

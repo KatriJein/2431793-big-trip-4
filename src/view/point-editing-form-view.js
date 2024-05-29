@@ -156,6 +156,7 @@ export default class PointEditingFormView extends AbstractStatefulView {
     this.#handleFormSubmit = onFormSubmit;
     this.#handleFormReset = onFormReset;
     this.#handleDeleteClick = onDeleteClick;
+
     this._setState(PointEditingFormView.parsePointToState(point));
     this._restoreHandlers();
   }
@@ -187,6 +188,10 @@ export default class PointEditingFormView extends AbstractStatefulView {
       this.#datePickerTo.destroy();
       this.#datePickerTo = null;
     }
+  };
+
+  reset = (point) => {
+    this.updateElement(PointEditingFormView.parsePointToState(point));
   };
 
   #setDatePickers = () => {
@@ -265,11 +270,6 @@ export default class PointEditingFormView extends AbstractStatefulView {
     this._setState({
       offers: selectedOffers
     });
-  };
-
-
-  reset = (point) => {
-    this.updateElement(PointEditingFormView.parsePointToState(point));
   };
 
   static parsePointToState = (point) => ({

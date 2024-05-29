@@ -38,9 +38,10 @@ export default class TripPresenter {
 
   #onNewPointDestroy = null;
 
-  #creatingNewPoint = false;
+  #isCreatingNewPoint = false;
   #isLoading = true;
   #isError = false;
+
   #uiBlocker = new UiBlocker({
     lowerLimit: TimeLimit.LOWER_LIMIT,
     upperLimit: TimeLimit.UPPER_LIMIT
@@ -92,7 +93,7 @@ export default class TripPresenter {
     if (this.#noPointComponent) {
       remove(this.#noPointComponent);
     }
-    this.#creatingNewPoint = true;
+    this.#isCreatingNewPoint = true;
     this.#currentSortType = SortType.DAY;
     this.#filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
     this.#newPointPresenter.init();
@@ -119,7 +120,7 @@ export default class TripPresenter {
   }
 
   #newPointDestroyHandler = ({ isCanceled }) => {
-    this.#creatingNewPoint = false;
+    this.#isCreatingNewPoint = false;
     this.#onNewPointDestroy();
     if (!this.points.length && isCanceled) {
       this.#clearBoard();
@@ -138,7 +139,7 @@ export default class TripPresenter {
       return;
     }
 
-    if (!this.#creatingNewPoint) {
+    if (!this.#isCreatingNewPoint) {
       if (!this.points.length) {
         this.#renderEmptyList();
         return;

@@ -5,7 +5,7 @@ export default class DestinationModel extends Observable {
   #destinations = [];
   #destinationsApiService = null;
 
-  constructor({destinationsApiService}) {
+  constructor({ destinationsApiService }) {
     super();
     this.#destinationsApiService = destinationsApiService;
   }
@@ -22,9 +22,9 @@ export default class DestinationModel extends Observable {
     try {
       const destinations = await this.#destinationsApiService.destinations;
       this.#destinations = destinations;
-    } catch(err) {
+    } catch (err) {
       this.#destinations = [];
-      this._notify(UpdateType.INIT, {isError : true });
+      this._notify(UpdateType.INIT, { isError: true });
     }
   }
 }

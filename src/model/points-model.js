@@ -20,7 +20,7 @@ export default class PointsModel extends Observable {
       const newPoint = this.#adaptToClient(response);
       this.#points = [newPoint, ...this.#points];
       this._notify(updateType, newPoint);
-    } catch(err) {
+    } catch (err) {
       throw new Error('Can\'t add point');
     }
   }
@@ -38,7 +38,7 @@ export default class PointsModel extends Observable {
         ...this.#points.slice(index + 1),
       ];
       this._notify(updateType);
-    } catch(err) {
+    } catch (err) {
       throw new Error('Can\'t delete point');
     }
   }
@@ -68,10 +68,10 @@ export default class PointsModel extends Observable {
     try {
       const points = await this.#pointsApiService.points;
       this.#points = points.map(this.#adaptToClient);
-      this._notify(UpdateType.INIT, {isError : false });
+      this._notify(UpdateType.INIT, { isError: false });
     } catch (err) {
       this.#points = [];
-      this._notify(UpdateType.INIT, {isError : true });
+      this._notify(UpdateType.INIT, { isError: true });
     }
   }
 

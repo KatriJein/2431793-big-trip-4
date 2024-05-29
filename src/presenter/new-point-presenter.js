@@ -4,6 +4,7 @@ import PointEditingFormView from '../view/point-editing-form-view.js';
 
 export default class NewPointPresenter {
   #pointListContainer = null;
+
   #handleDataChange = null;
   #handleDestroy = null;
 
@@ -21,7 +22,7 @@ export default class NewPointPresenter {
   }
 
   destroy({ isCanceled = true } = {}) {
-    if (this.#pointEditComponent === null) {
+    if (!this.#pointEditComponent) {
       return;
     }
 
@@ -33,7 +34,7 @@ export default class NewPointPresenter {
   }
 
   init() {
-    if (this.#pointEditComponent !== null) {
+    if (this.#pointEditComponent) {
       return;
     }
 

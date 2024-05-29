@@ -10,11 +10,11 @@ function getInfofromPoints({ points, destinations, offers }) {
     };
   }
   const sortedPoints = [...points.sort(sortDay)];
-  const arrayOfDestinations = [];
+  const path = [];
   let sumOfTrip = 0;
   sortedPoints.forEach((point) => {
     const destination = destinations.find((dest) => dest.id === point.destination).name;
-    arrayOfDestinations.push(destination);
+    path.push(destination);
     const offersOfCurrentType = offers.find((offer) => offer.type === point.type).offers;
     offersOfCurrentType.forEach((offer) => {
       if (point.offers.includes(offer.id)) {
@@ -25,7 +25,7 @@ function getInfofromPoints({ points, destinations, offers }) {
   });
 
   return {
-    destinationsString: createViewOfPath(arrayOfDestinations),
+    destinationsString: createViewOfPath(path),
     datesString: createViewOfDates(sortedPoints[0]?.dateFrom, sortedPoints[sortedPoints.length - 1]?.dateTo),
     total: sumOfTrip
   };
